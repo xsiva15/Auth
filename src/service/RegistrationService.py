@@ -1,8 +1,9 @@
 from fastapi import HTTPException, status
 from src.repository import RegistrationRepo
-from src.models import RegistrationResponse, RegistrationData
+from src.models import RegistrationResponse, RegistrationData, ConfirmationData
 from src.utils import JWTManager, PasswordManager
 from .MailService import MailService
+from starlette.responses import RedirectResponse
 
 
 def get_registration_service() -> "RegistrationService":
@@ -51,5 +52,27 @@ class RegistrationService(MailService):
             refresh_token=tokens["refresh"]
         )
 
-    async def confirm_email(self):
-        pass
+    async def confirm_email(self,
+                            conf_data: ConfirmationData) -> RedirectResponse:
+        """
+        Выполняет подтверждение email и редиректит на главную страницу сайта если,
+        токен в ссылке еще жиа, если нет, то отправляет новую ссылку на почту и делает редирект на
+        страницу где написано о том, что была выслана новая ссылка (пока такой страницы нет)
+        """
+        if conf_data.expired:
+            await self.send_user_confirm_mail(
+                email=conf_data.email,
+                user_id=conf_data.user_id
+            )
+            # Тут должно быть перенаправление на страницу, где мы пишем, что о том, что
+            # мы выслали челу новую ссылку
+            return RedirectResponse(url="https://asclavia.net/")
+
+        if await self._repo.verify_email_affiliation(conf_data.email, conf_data.user_id):
+            await self._repo.make_users_email_verified(conf_data.email)
+
+        else:
+            pass
+            # По хорошему тут бы залогировать
+
+        return RedirectResponse(url="https://asclavia.net/")

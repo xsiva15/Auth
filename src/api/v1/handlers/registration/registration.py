@@ -2,7 +2,8 @@ from fastapi import APIRouter, Depends
 from src.models import (RegistrationResponse,
                         SuchUserExists,
                         UserData,
-                        RegistrationData
+                        RegistrationData,
+                        convert_token_to_ConfirmationData
                         )
 from src.service import get_registration_service
 from starlette import status
@@ -42,10 +43,14 @@ async def registrate_user(
     response_class=RedirectResponse,
     summary="Высылается пользователю на почту для подтверждения email"
 )
-async def confirm_email(token: str):
+async def confirm_email(
+        token: str,
+        service = Depends(get_registration_service)
+):
     """
     Логика такая: если токен в пиьме еще жив, то все гуд - перенапраляем чела на наш сайт, если нет на веб страницу
     где пишем, что отправили новое пиьмо
     """
-
-    #return RedirectResponse(url="https://example.com/email-confirmed")
+    return await service.confirm_email(
+        convert_token_to_ConfirmationData(token)
+    )

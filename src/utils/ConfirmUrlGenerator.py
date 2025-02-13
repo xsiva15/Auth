@@ -28,17 +28,15 @@ class ConfirmUrlGenerator:
         )
         return self._base_url + f"/v1/registration/confirm-email?token={token}"
 
-    def decode_token(self, token: str) -> dict[str, Any] | None:
-        try:
-            decoded_payload = jwt.decode(
-                jwt=token,
-                key=self.__secret_key,
-                algorithms=["HS256"],
+    def decode_token(self, token: str) -> dict[str, Any]:
+        decoded_payload = jwt.decode(
+            jwt=token,
+            key=self.__secret_key,
+            algorithms=["HS256"],
+            options={"verify_exp": False}
+        )
 
-            )
-            return {el: decoded_payload[el] for el in ["user", "email"]}
-        except jwt.ExpiredSignatureError:
-            return None
+        return {el: decoded_payload[el] for el in ["user", "email"]} | {"expired": decoded_payload["exp"] < datetime.datetime.utcnow()}
 
 
 ConfirmUrlManager = ConfirmUrlGenerator(
