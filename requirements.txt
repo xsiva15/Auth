@@ -1,0 +1,7 @@
+fastapi
+pydantic
+starlette
+sqlalchemy[asyncio]
+asyncpg
+passlib
+jwt

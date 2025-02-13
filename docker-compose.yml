@@ -1,0 +1,15 @@
+services:
+  db:
+    image: postgres:17
+    container_name: my_postgres_db
+    environment:
+      - POSTGRES_USER=myuser         # Логин для подключения к PostgreSQL
+      - POSTGRES_PASSWORD=mypassword # Пароль для подключения
+      - POSTGRES_DB=mydatabase       # Имя создаваемой БД
+    ports:
+      - "5432:5432"                  # Проброс порта (внешний:внутренний)
+    volumes:
+      # Монтируем SQL-скрипт в директорию,
+      # откуда официальный образ PostgreSQL автоматически выполнит его при инициализации
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    restart: unless-stopped
