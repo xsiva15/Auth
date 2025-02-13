@@ -1,8 +1,7 @@
 from pydantic import BaseModel
-from .EmailPreparator import EmailPreparator
 
 
-class RegistrationData(EmailPreparator):
+class RegistrationData(BaseModel):
     phone: int
     email: str
     password: str
