@@ -5,8 +5,22 @@ from pathlib import Path
 import os
 
 load_dotenv(dotenv_path=
-            Path.cwd().parent / ".env"
+            Path().cwd() / ".env"
             )
+
+
+@dataclass(frozen=True)
+class PasswordResetParam:
+    lifespan_m: int = 10 # Время жизни ссылки для сброса
+    secret_key: str = "dadada",
+    base_url: str = "https://asclavia.net/resetPassword"
+
+
+@dataclass(frozen=True)
+class ConfirmEmailParams:
+    lifespan_m: int = 10
+    secret_key: str = "dada"
+    base_url: str = "http://127.0.0.1:8000"
 
 
 @dataclass(frozen=True)
@@ -75,6 +89,8 @@ class Configuration:
     db: DatabaseConfig = field(default_factory=DatabaseConfig)
     password_hash_param: PasswordHashParam = field(default_factory=PasswordHashParam)
     smtp_params: SMTPParams = field(default_factory=SMTPParams)
+    confirm_email_params: ConfirmEmailParams = field(default_factory=ConfirmEmailParams)
+    confirm_reset_params: PasswordResetParam = field(default_factory=PasswordResetParam)
 
 
 configuration = Configuration()
