@@ -1,6 +1,20 @@
 from dataclasses import dataclass, field
 from sqlalchemy.engine import URL
+from dotenv import load_dotenv
+from pathlib import Path
 import os
+
+load_dotenv(dotenv_path=
+            Path.cwd().parent / ".env"
+            )
+
+
+@dataclass(frozen=True)
+class SMTPParams:
+    host = "smtp.timeweb.ru"
+    port = 465
+    SMTP_USER = "no-reply@asclavia.net"
+    SMTP_PASSWORD = os.environ["EmailPassword"]
 
 
 @dataclass(frozen=True)

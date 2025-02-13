@@ -6,3 +6,4 @@ asyncpg
 passlib
 bcrypt
 PyJWT
+python-dotenv
