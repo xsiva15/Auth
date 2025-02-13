@@ -64,7 +64,7 @@ class RegistrationService(MailService):
                 email=conf_data.email,
                 user_id=conf_data.user_id
             )
-            # Тут должно быть перенаправление на страницу, где мы пишем, что о том, что
+            # Тут должно быть перенаправление на страницу, где мы пишем о том, что
             # мы выслали челу новую ссылку
             return RedirectResponse(url="https://asclavia.net/")
 

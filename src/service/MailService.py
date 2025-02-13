@@ -17,6 +17,13 @@ connection_config = ConnectionConfig(
 fast_mail = FastMail(connection_config)
 
 
+"""
+url_to_go --- ссылка по которой должен перейти юзер в данном письме, чтобы перевести  
+содержимое письма на HTML вставляйте его в body и также измените 
+subtype на MessageType.HTML 
+"""
+
+
 class MailService:
     def __init__(self, mail_app: FastMail = fast_mail) -> None:
         self._mail_app = mail_app

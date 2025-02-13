@@ -1,6 +1,7 @@
 from passlib.context import CryptContext
 from src.config import configuration
 
+
 class PasswordHasher:
     """ Класс-обёртка для работы с Passlib (bcrypt). """
 

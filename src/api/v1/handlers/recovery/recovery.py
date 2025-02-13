@@ -28,5 +28,7 @@ async def set_new_password(
     status_code=status.HTTP_204_NO_CONTENT,
     summary="Используется для отправки пользователю письма с ссылкой на страницу для сброса пароля"
 )
-async def send_email_for_recov(email: str):
+async def send_email_for_recov(
+        email: str
+):
     pass
