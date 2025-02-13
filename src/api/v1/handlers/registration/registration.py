@@ -37,7 +37,7 @@ async def registrate_user(
     )
 
 
-@registration_router.post(
+@registration_router.get(
     "/confirm-email",
     status_code=status.HTTP_204_NO_CONTENT,
     response_class=RedirectResponse,

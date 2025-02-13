@@ -36,7 +36,7 @@ class ConfirmUrlGenerator:
             options={"verify_exp": False}
         )
 
-        return {el: decoded_payload[el] for el in ["user", "email"]} | {"expired": decoded_payload["exp"] < datetime.datetime.utcnow()}
+        return {el: decoded_payload[el] for el in ["user", "email"]} | {"expired": decoded_payload["exp"] < int(int(datetime.datetime.utcnow().timestamp()))}
 
 
 ConfirmUrlManager = ConfirmUrlGenerator(
