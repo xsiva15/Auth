@@ -9,9 +9,9 @@ class RegistrationRepo(TablesRepositoryInterface):
                        email: str,
                        phone_num: str,
                        password_hash: str
-                       ) -> None:
+                       ) -> str:
         async with self._session_getter() as session:
-            await session.execucute(
+            result = await session.execute(
                 insert(User).values(
                     username=email,
                     email=email,
@@ -19,8 +19,9 @@ class RegistrationRepo(TablesRepositoryInterface):
                     phone_number=phone_num,
                     is_active=False,
                     created_at=datetime.now(timezone.utc)
-                )
+                ).returning(User.id)
             )
+            return result.scalar_one()
 
     async def is_user_exists(self,
                              email: str

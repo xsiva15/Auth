@@ -28,7 +28,7 @@ class LoginService:
 
         if password_check_result:
             tokens = JWTManager.generate_tokens(
-                user_index=user_data.id,
+                user_index=str(user_data.id),
                 email=user_data.email
             )
             return LoginResponse(
