@@ -2,15 +2,17 @@ from fastapi import HTTPException, status
 from src.repository import RegistrationRepo
 from src.models import RegistrationResponse, RegistrationData
 from src.utils import JWTManager, PasswordManager
+from .MailService import MailService
 
 
 def get_registration_service() -> "RegistrationService":
     return RegistrationService(repo=RegistrationRepo())
 
 
-class RegistrationService:
+class RegistrationService(MailService):
     def __init__(self, repo: RegistrationRepo) -> None:
         self._repo = repo
+        super().__init__()
 
     async def registrate_user(self,
                               registr_data: RegistrationData
@@ -39,7 +41,10 @@ class RegistrationService:
             email=registr_data.email
         )
 
-        # Тут будет отправка Email
+        await self.send_user_confirm_mail(
+            email=registr_data.email,
+            user_id=str(user_id)
+        )
 
         return RegistrationResponse(
             access_token=tokens["access"],
