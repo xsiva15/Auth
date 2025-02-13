@@ -13,8 +13,8 @@ load_dotenv(dotenv_path=
 class SMTPParams:
     host = "smtp.timeweb.ru"
     port = 465
-    SMTP_USER = "no-reply@asclavia.net"
-    SMTP_PASSWORD = os.environ["EmailPassword"]
+    user = "no-reply@asclavia.net"
+    password = os.environ["EmailPassword"]
 
 
 @dataclass(frozen=True)
@@ -74,6 +74,7 @@ class Configuration:
     jwt_param: JwtTokenParams = field(default_factory=JwtTokenParams)
     db: DatabaseConfig = field(default_factory=DatabaseConfig)
     password_hash_param: PasswordHashParam = field(default_factory=PasswordHashParam)
+    smtp_params: SMTPParams = field(default_factory=SMTPParams)
 
 
 configuration = Configuration()
