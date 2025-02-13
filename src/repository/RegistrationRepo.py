@@ -1,10 +1,11 @@
 from .interface import TablesRepositoryInterface
+from .CommonTools import CommonTools
 from src.database import User
 from sqlalchemy import insert, select, update, exists
 from datetime import datetime, timezone
 
 
-class RegistrationRepo(TablesRepositoryInterface):
+class RegistrationRepo(TablesRepositoryInterface, CommonTools):
     async def add_user(self,
                        email: str,
                        phone_num: str,
