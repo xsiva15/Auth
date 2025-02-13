@@ -1,5 +1,6 @@
 from pydantic import BaseModel, field_validator
 from starlette import status
+from .EmailNormaliztion import EmailNormalizer
 
 
 class RegistrationResponse(BaseModel):
@@ -13,7 +14,7 @@ class SuchUserExists(BaseModel):
     detail: str = "Such user already exists"
 
 
-class UserData(BaseModel):
+class UserData(EmailNormalizer):
     phone: str
     email: str
     password: str

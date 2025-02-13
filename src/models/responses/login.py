@@ -1,5 +1,11 @@
 from pydantic import BaseModel
 from starlette import status
+from .EmailNormaliztion import EmailNormalizer
+
+
+class DataForLogin(EmailNormalizer):
+    email: str
+    password: str
 
 
 class LoginResponse(BaseModel):
