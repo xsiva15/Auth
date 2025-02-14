@@ -11,16 +11,16 @@ load_dotenv(dotenv_path=
 
 @dataclass(frozen=True)
 class PasswordResetParam:
-    lifespan_m: int = 10 # Время жизни ссылки для сброса
+    lifespan_m: int = 10 # Время жизни ссылки для сброса в минутах
     secret_key: str = "dadada"
     base_url: str = "https://asclavia.net/resetPassword"
 
 
 @dataclass(frozen=True)
 class ConfirmEmailParams:
-    lifespan_m: int = 10 # Время жизни ссылки для подтв пароля
+    lifespan_m: int = 10 # Время жизни ссылки для подтверждения почты
     secret_key: str = "dada"
-    base_url: str = "http://127.0.0.1:8000"
+    base_url: str = "http://127.0.0.1:8000" # Тут нужно указать путь к бэкэнду
 
 
 @dataclass(frozen=True)
@@ -33,6 +33,9 @@ class SMTPParams:
 
 @dataclass(frozen=True)
 class PasswordHashParam:
+    """
+    Отвечает за параметры хэширования паролей
+    """
     rounds: int = 12
 
 
@@ -54,7 +57,7 @@ class DatabaseConfig:
     user: str = 'myuser'
     password: str = "mypassword"
     port: int = 5432
-    host: str = 'localhost'
+    host: str = 'db'
 
     driver: str = 'asyncpg'
     database_system: str = 'postgresql'
