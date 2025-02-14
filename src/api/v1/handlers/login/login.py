@@ -24,6 +24,12 @@ login_router = APIRouter(
 async def login_user(data_for_login: DataForLogin,
                      service = Depends(get_login_service)
                      ) -> LoginResponse:
+    """
+    Логинит пользователя, если введен некорректный email (имеется ввиду строчка, которая не может быть email-ом)
+    возвращает 422.
+    Если человек ввел неправильный пароль возвращается код ошибки 403.
+    А если такого email нет в базе, то 404.
+    """
     return await service.login_user(
         LoginData(
             email=data_for_login.email,

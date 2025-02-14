@@ -27,6 +27,11 @@ async def registrate_user(
         user_data: UserData,
         service = Depends(get_registration_service)
 ) -> RegistrationResponse:
+    """
+    Валидирует номер телефона и email на предмет их формата, если что то не
+    так возвращается кож ошибки 422.
+    Также может вернуть код ошибки 409 если пользователь уже есть в базе
+    """
 
     return await service.registrate_user(
         RegistrationData(
@@ -48,6 +53,7 @@ async def confirm_email(
         service = Depends(get_registration_service)
 ):
     """
+    Данная ручка будет задействована в ссылке для подтверждения email-а
     Логика такая: если токен в пиьме еще жив, то все гуд - перенапраляем чела на наш сайт, если нет на веб страницу
     где пишем, что отправили новое пиьмо
     """

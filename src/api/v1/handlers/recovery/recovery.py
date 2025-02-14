@@ -31,6 +31,11 @@ async def set_new_password(
         password: str,
         service=Depends(get_recovery_service)
 ):
+    """
+    Данная ручка должна быть использована на странице для обновления пароля, токен берется
+    с пути к странице.
+    Возвращает код 400 если токен уже не действует.
+    """
     return await service.password_recover(
         convert_data_to_DataForReset(
             token=token,
@@ -52,6 +57,12 @@ async def send_email_for_recov(
         email_data: EmailData,
         service=Depends(get_recovery_service)
 ):
+    """
+    Данная ручка используется для запроса отправки на указанный email ссылки на страницу,
+    на которой можно будет восстановить пароль
+    Возвращает 404 если такого пользователя нет.
+    Возвращает 422 если введенный email некорректен
+    """
     return await service.send_email_for_recov(
         DataForSendingEmail(
             email=email_data.email
