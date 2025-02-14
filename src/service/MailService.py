@@ -48,7 +48,7 @@ class MailService:
     async def send_reset_mail(self,
                               email: str,
                               user_id: str) -> None:
-        url_to_go = ResetPassManager(
+        url_to_go = ResetPassManager.generate_reset_link(
             email=email,
             user_id=user_id
         )

@@ -12,7 +12,7 @@ load_dotenv(dotenv_path=
 @dataclass(frozen=True)
 class PasswordResetParam:
     lifespan_m: int = 10 # Время жизни ссылки для сброса
-    secret_key: str = "dadada",
+    secret_key: str = "dadada"
     base_url: str = "https://asclavia.net/resetPassword"
 
 

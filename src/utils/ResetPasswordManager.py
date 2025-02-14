@@ -30,16 +30,15 @@ class ResetPasswordManager:
         return self._base_url + "/" + token
 
     def decode_token(self, token: str) -> dict[str, Any] | None:
-        try:
-            decoded_payload = jwt.decode(
-                jwt=token,
-                key=self.__secret_key,
-                algorithms=["HS256"],
+        decoded_payload = jwt.decode(
+            jwt=token,
+            key=self.__secret_key,
+            algorithms=["HS256"],
+            options={"verify_exp": False}
+        )
 
-            )
-            return {el: decoded_payload[el] for el in ["user", "email"]}
-        except jwt.ExpiredSignatureError:
-            return None
+        return {el: decoded_payload[el] for el in ["user", "email"]} | {
+            "expired": decoded_payload["exp"] < int(int(datetime.datetime.utcnow().timestamp()))}
 
 
 ResetPassManager = ResetPasswordManager(
