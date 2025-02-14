@@ -9,3 +9,4 @@ PyJWT
 python-dotenv
 fastapi-mail
 email_validator
+uvicorn

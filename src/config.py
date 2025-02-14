@@ -18,7 +18,7 @@ class PasswordResetParam:
 
 @dataclass(frozen=True)
 class ConfirmEmailParams:
-    lifespan_m: int = 10
+    lifespan_m: int = 10 # Время жизни ссылки для подтв пароля
     secret_key: str = "dada"
     base_url: str = "http://127.0.0.1:8000"
 
