@@ -1,6 +1,5 @@
 from sqlalchemy import select
 from src.database import User
-from sqlalchemy import exists
 
 
 class CommonTools:
@@ -31,15 +30,4 @@ class CommonTools:
         return str(user_data.id) == user_id
 
 
-    async def is_user_exists(self,
-                             email: str
-                             ) -> bool:
-        """
-        True если этот пользователь уже существует, False иначе
-        """
-        async with self._session_getter() as session:
-            result = await session.execute(
-                    select(exists().where(User.email == email))
-                    )
-            return result.scalar()
 

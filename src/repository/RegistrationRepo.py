@@ -1,7 +1,7 @@
 from .interface import TablesRepositoryInterface
 from .CommonTools import CommonTools
 from src.database import User
-from sqlalchemy import insert, update
+from sqlalchemy import insert, update, select, exists
 from datetime import datetime, timezone
 
 
@@ -33,3 +33,15 @@ class RegistrationRepo(TablesRepositoryInterface, CommonTools):
                 .where(User.email == email)
                 .values(is_active=True)
             )
+
+    async def is_user_exists(self,
+                             email: str
+                             ) -> bool:
+        """
+        True если этот пользователь уже существует, False иначе
+        """
+        async with self._session_getter() as session:
+            result = await session.execute(
+                    select(exists().where(User.email == email))
+                    )
+            return result.scalar()
