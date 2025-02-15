@@ -28,3 +28,8 @@ class UserData(EmailNormalizer):
             raise ValueError("Номер телефона должен содержать только цифры.")
 
         return value
+
+
+class BadTokenResp(BaseModel):
+    status_code: int = status.HTTP_403_FORBIDDEN
+    detail: str = "The token is invalid"

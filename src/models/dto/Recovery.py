@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from src.utils import ResetPassManager
+from fastapi import HTTPException, status
 
 
 class DataForReset(BaseModel):
@@ -17,6 +18,13 @@ def convert_data_to_DataForReset(
     dec_data = ResetPassManager.decode_token(
         token
     )
+
+    if dec_data is None:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="The token is invalid"
+        )
+
     return DataForReset(
         user_id=dec_data["user"],
         email=dec_data["email"],

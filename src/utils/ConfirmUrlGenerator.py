@@ -1,5 +1,6 @@
 import datetime
 import jwt
+from jwt.exceptions import InvalidSignatureError, DecodeError
 from typing import Any
 from src.config import configuration
 
@@ -28,15 +29,18 @@ class ConfirmUrlGenerator:
         )
         return self._base_url + f"/v1/registration/confirm-email?token={token}"
 
-    def decode_token(self, token: str) -> dict[str, Any]:
-        decoded_payload = jwt.decode(
-            jwt=token,
-            key=self.__secret_key,
-            algorithms=["HS256"],
-            options={"verify_exp": False}
-        )
+    def decode_token(self, token: str) -> dict[str, Any] | None:
+        try:
+            decoded_payload = jwt.decode(
+                jwt=token,
+                key=self.__secret_key,
+                algorithms=["HS256"],
+                options={"verify_exp": False}
+            )
 
-        return {el: decoded_payload[el] for el in ["user", "email"]} | {"expired": decoded_payload["exp"] < int(int(datetime.datetime.utcnow().timestamp()))}
+            return {el: decoded_payload[el] for el in ["user", "email"]} | {"expired": decoded_payload["exp"] < int(int(datetime.datetime.utcnow().timestamp()))}
+        except (InvalidSignatureError, DecodeError):
+            return None
 
 
 ConfirmUrlManager = ConfirmUrlGenerator(

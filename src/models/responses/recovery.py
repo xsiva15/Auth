@@ -19,3 +19,8 @@ class ResetExpired(BaseModel):
 class NoEmailInDataBase(BaseModel):
     status_code: int = status.HTTP_404_NOT_FOUND,
     detail: str = "User not found in database"
+
+
+class BadTokenResponse(BaseModel):
+    status_code: int = status.HTTP_403_FORBIDDEN,
+    detail: str = "The token is invalid"

@@ -3,7 +3,8 @@ from src.models import (RegistrationResponse,
                         SuchUserExists,
                         UserData,
                         RegistrationData,
-                        convert_token_to_ConfirmationData
+                        convert_token_to_ConfirmationData,
+                        BadTokenResp
                         )
 from src.service import get_registration_service
 from starlette import status
@@ -46,7 +47,10 @@ async def registrate_user(
     "/confirm-email",
     status_code=status.HTTP_204_NO_CONTENT,
     response_class=RedirectResponse,
-    summary="Высылается пользователю на почту для подтверждения email"
+    summary="Высылается пользователю на почту для подтверждения email",
+    responses={
+        403: {"model": BadTokenResp, 'detail': "The token is invalid"}
+    }
 )
 async def confirm_email(
         token: str,

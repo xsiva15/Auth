@@ -6,7 +6,8 @@ from src.models import (
     DataForSendingEmail,
     NoEmailInDataBase,
     convert_data_to_DataForReset,
-    ResetExpired
+    ResetExpired,
+    BadTokenResponse
     )
 from src.service import get_recovery_service
 
@@ -23,7 +24,8 @@ recovery_router = APIRouter(
     response_class=RedirectResponse,
     summary="Используется для изменения текущего пароля пользователя, вся необходимая информация о пользователе передается через токен",
     responses={
-        400: {"model": ResetExpired, "detail": "A link for recover was expired"}
+        400: {"model": ResetExpired, "detail": "A link for recover was expired"},
+        403: {"model": BadTokenResponse, "detail": "The token is invalid"}
     }
 )
 async def set_new_password(
