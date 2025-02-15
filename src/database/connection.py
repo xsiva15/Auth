@@ -3,6 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, async_sessionmaker
 from src.config import configuration
 from contextlib import asynccontextmanager
 from typing import AsyncGenerator
+from .schemas import Base
 
 
 async_engine: AsyncEngine = _create_async_engine(
@@ -16,8 +17,15 @@ AsyncSessionLocal = async_sessionmaker(
 )
 
 
+async def create_tables():
+    async with async_engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+
+
 @asynccontextmanager
 async def get_session() -> AsyncGenerator[AsyncSession, None]:
+    await create_tables()
+
     async with AsyncSessionLocal() as session:
         try:
             yield session

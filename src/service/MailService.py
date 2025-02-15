@@ -39,6 +39,9 @@ class MailService:
         while num_bad <= retry:
             try:
                 await self._mail_app.send_message(message)
+                mail_logger.info(
+                    f"Пользователю {message.recipients[0]} отправлено сообщение"
+                )
                 return None
             except ConnectionErrors:
                 num_bad += 1
